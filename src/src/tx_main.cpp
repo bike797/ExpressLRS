@@ -396,7 +396,7 @@ void ICACHE_RAM_ATTR timerCallbackIdle()
 void sendLuaParams()
 {
   uint8_t luaParams[] = {0xFF,
-                         (uint8_t)(InBindingMode | (webUpdateMode << 1)),
+                         (uint8_t)(InBindingMode | (webUpdateMode << 1) | (BLEjoystickActive << 2)),
                          (uint8_t)ExpressLRS_currAirRate_Modparams->enum_rate,
                          (uint8_t)(ExpressLRS_currAirRate_Modparams->TLMinterval),
                          (uint8_t)(POWERMGNT.currPower()),
@@ -507,24 +507,37 @@ void HandleUpdateParameter()
   case 4:
     break;
 
+  case 0xFD:
+    if (crsf.ParameterUpdateData[1] == 1)
+    {
+#ifdef PLATFORM_ESP32
+      BLEjoystickActive = true; 
+      Serial.println("BLE Joystick Mode Requested!");
+      hwTimer.callbackTock = &SendRCdataToBLE;
+      crsf.RCdataCallback = &BluetoothJoystickUpdateValues;
+      hwTimer.updateInterval(8000);
+      crsf.setSyncParams(8000); // 125hz
+      Radio.SetMode(SX1280_MODE_SLEEP);
+      Radio.End();
+      BluetoothJoystickBegin();
+      sendLuaParams();
+      sendLuaParams();
+#else
+      BLEjoystickActive = true; 
+      Serial.println("BLE Joystick Mode Requested but not supported on this platform!");
+#endif
+      break;
+    }
+
   case 0xFE:
     if (crsf.ParameterUpdateData[1] == 1)
     {
 #ifdef PLATFORM_ESP32
-      // webUpdateMode = true;
-      // Serial.println("Wifi Update Mode Requested!");
-      // sendLuaParams();
-      // sendLuaParams();
-      // BeginWebUpdate();
-
-      //hwTimer.stop();
-      BluetoothJoystickBegin();
-      hwTimer.callbackTock = &SendRCdataToBLE;
-      Radio.End();
-      crsf.setSyncParams(8000); // 125hz
-      hwTimer.updateInterval(8000);
-      crsf.RCdataCallback = &BluetoothJoystickUpdateValues;
-      BLEjoystickActive = true; 
+      webUpdateMode = true;
+      Serial.println("Wifi Update Mode Requested!");
+      sendLuaParams();
+      sendLuaParams();
+      BeginWebUpdate();
 #else
       webUpdateMode = false;
       Serial.println("Wifi Update Mode Requested but not supported on this platform!");
@@ -837,9 +850,7 @@ void loop()
     #endif // GPIO_PIN_LED_RED
   }
 
-  #ifdef PLATFORM_STM32
-    crsf.handleUARTin();
-  #endif // PLATFORM_STM32
+  crsf.handleUARTin();
 
   #if defined(GPIO_PIN_BUTTON) && (GPIO_PIN_BUTTON != UNDEF_PIN)
     button.handle();
