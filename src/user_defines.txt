@@ -12,6 +12,7 @@
 # Uncomment the line below to use a hardcoded binding phrase
 # Leave commented to use traditional binding
 #-DMY_BINDING_PHRASE="default ExpressLRS binding phrase"
+-DMY_BINDING_PHRASE="tory797"
 
 ### REGULATORY DOMAIN: ###
 
@@ -20,12 +21,12 @@
 #-DRegulatory_Domain_AU_433
 #-DRegulatory_Domain_EU_433
 #-DRegulatory_Domain_FCC_915
-#-DRegulatory_Domain_ISM_2400
+-DRegulatory_Domain_ISM_2400
 
 
 ### SWITCHES: ###
 
-#-DHYBRID_SWITCHES_8
+-DHYBRID_SWITCHES_8
 
 
 ### PERFORMANCE OPTIONS: ###
@@ -58,7 +59,7 @@
 #-DUSE_500HZ
 
 # Comment this to disable advanced telemetry.
-#-DENABLE_TELEMETRY
+-DENABLE_TELEMETRY
 
 #Comment this to disable diversity function
 #-DUSE_DIVERSITY
