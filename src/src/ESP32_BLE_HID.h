@@ -23,14 +23,14 @@ extern CRSF crsf;
 #define numOfHatSwitches 0
 #define enableX true
 #define enableY true
-#define enableZ false
-#define enableRZ false
+#define enableZ true
+#define enableRZ true
 #define enableRX true
 #define enableRY true
 #define enableSlider1 true
 #define enableSlider2 true
-#define enableRudder true
-#define enableThrottle true
+#define enableRudder false
+#define enableThrottle false
 #define enableAccelerator false
 #define enableBrake false
 #define enableSteering false
@@ -61,15 +61,16 @@ void BluetoothJoystickUpdateValues()
 
         for (uint8_t i = 0; i < 9; i++)
         {
-            data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN - 1, CRSF_CHANNEL_VALUE_MAX + 1, -32768, 32768);
+            //data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN - 1, CRSF_CHANNEL_VALUE_MAX + 1, -32768, 32768);
+            data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN, CRSF_CHANNEL_VALUE_MAX, 0, 2048);
         }
 
         bleGamepad.setX(data[0]);
         bleGamepad.setY(data[1]);
-        bleGamepad.setRX(data[2]);
-        bleGamepad.setRY(data[3]);
-        bleGamepad.setRudder(data[4]);
-        bleGamepad.setThrottle(data[5]);
+        bleGamepad.setZ(data[2]);
+        bleGamepad.setRX(data[3]);
+        bleGamepad.setRY(data[4]);
+        bleGamepad.setRZ(data[5]);
         bleGamepad.setSlider1(data[6]);
         bleGamepad.setSlider2(data[7]);
     }
