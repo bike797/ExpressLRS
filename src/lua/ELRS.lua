@@ -142,7 +142,7 @@ local BLEJoystick = {
     list = {},
     values = {},
     max_allowed = 0,
-    offsets = {left=65, right=0, top=5, bottom=5},
+    offsets = {left=125, right=0, top=5, bottom=5},
 }
 
 
@@ -252,6 +252,8 @@ local function refreshLCD()
     if wifiupdatemode == true then --make this less hacky later
         lcd.drawText(lOffset, yOffset, "Goto http://10.0.0.1   ", INVERS)
     -- elseif bindmode == true then
+    if blejoystickmode == true then 
+        lcd.drawText((lOffset, yOffset, "BLE Joystick Mode Active", INVERS)
     else
         lcd.drawText(lOffset, yOffset, 'ExpressLRS ' .. commitSha .. '  ' .. tostring(UartBadPkts) .. ':' .. tostring(UartGoodPkts), INVERS)
     end
