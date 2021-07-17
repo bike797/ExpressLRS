@@ -62,7 +62,7 @@ void BluetoothJoystickUpdateValues()
         for (uint8_t i = 0; i < 9; i++)
         {
             //data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN - 1, CRSF_CHANNEL_VALUE_MAX + 1, -32768, 32768);
-            data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN, CRSF_CHANNEL_VALUE_MAX, 0, 2048);
+            data[i] = map(crsf.ChannelDataIn[i], CRSF_CHANNEL_VALUE_MIN - 1, CRSF_CHANNEL_VALUE_MAX + 1, -1, 32768);
         }
 
         bleGamepad.setX(data[0]);

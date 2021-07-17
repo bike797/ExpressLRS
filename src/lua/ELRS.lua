@@ -133,7 +133,7 @@ local function ble_joystick_start(item, event)
 end
 
 local BLEJoystick = {
-    index = 6,
+    index = 5,
     editable = false,
     name = '[Joystick]',
     exec = false,
@@ -142,7 +142,7 @@ local BLEJoystick = {
     list = {},
     values = {},
     max_allowed = 0,
-    offsets = {left=125, right=0, top=5, bottom=5},
+    offsets = {left=190, right=0, top=5, bottom=5},
 }
 
 
@@ -252,10 +252,13 @@ local function refreshLCD()
     if wifiupdatemode == true then --make this less hacky later
         lcd.drawText(lOffset, yOffset, "Goto http://10.0.0.1   ", INVERS)
     -- elseif bindmode == true then
-    if blejoystickmode == true then 
-        lcd.drawText((lOffset, yOffset, "BLE Joystick Mode Active", INVERS)
     else
         lcd.drawText(lOffset, yOffset, 'ExpressLRS ' .. commitSha .. '  ' .. tostring(UartBadPkts) .. ':' .. tostring(UartGoodPkts), INVERS)
+    end
+
+    if blejoystickmode == true then
+        yOffset = yOffset + radio_data.yOffset * 7
+        lcd.drawText(lOffset, yOffset, "BLE Joystick Mode Active", INVERS+ BLINK)
     end
 
     if tx_lua_version.values[tx_lua_version.selected] == version or force_use_lua == true then
