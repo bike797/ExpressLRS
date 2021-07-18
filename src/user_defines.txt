@@ -64,4 +64,7 @@
 #-DUSE_DIVERSITY
 
 #Experimental bluetooth joystick support 
--DBLE_HID_JOYSTICK 
+-DBLE_HID_JOYSTICK
+ 
+# Comment this to disable dynamic TX power management.
+-DUSE_DYNAMIC_POWER
